@@ -1,7 +1,5 @@
 #!/bin/bash
 
-  # http://hints.macworld.com/article.php?story=20100927161027611
-
   # detect Airport and Ethernet interfaces
   eth_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (USB 10\/100\/1000 LAN|Thunderbolt Ethernet), Device: (en.)\)$/\2/p'`
   wifi_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (Wi-Fi|AirPort), Device: (en.)\)$/\2/p'`
