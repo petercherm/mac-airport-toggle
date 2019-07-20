@@ -6,12 +6,6 @@
   eth_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (USB 10\/100\/1000 LAN|Thunderbolt Ethernet?.*), Device: (en?.*)\)$/\2/p'`
   wifi_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (Wi-Fi|AirPort), Device: (en.)\)$/\2/p'`
 
-  for i in $eth_dev
-  do
-    echo "Looping ... ethernet adapter $i"
-  done
-
-
 function set_airport {
 
   new_status=$1
@@ -45,10 +39,14 @@ if [ -f "/var/tmp/prev_air_on" ]; then
   prev_air_status="On"
 fi
 
-# Check actual current ethernet status
-if [ "`ifconfig $eth_dev | grep \"status: active\"`" != "" ]; then
-  eth_status="On"
-fi
+# Check actual current ethernet status of all matching adapters
+for i in $eth_dev
+  do
+    if [ "`ifconfig $i | grep \"status: active\"`" != "" ]; then
+      eth_status="On"
+    fi
+  done
+
 
 # And actual current AirPort status
 air_status=`/usr/sbin/networksetup -getairportpower $wifi_dev | awk '{ print $4 }'`
