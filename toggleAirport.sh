@@ -6,6 +6,12 @@
   eth_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (USB 10\/100\/1000 LAN|Thunderbolt Ethernet?.*), Device: (en?.*)\)$/\2/p'`
   wifi_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (Wi-Fi|AirPort), Device: (en.)\)$/\2/p'`
 
+  for i in $eth_dev
+  do
+    echo "Looping ... ethernet adapter $i"
+  done
+
+
 function set_airport {
 
   new_status=$1
