@@ -2,17 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>Label</key>
-  <string>com.asb.toggleairport</string>
-  <key>OnDemand</key>
-  <true/>
-  <key>ProgramArguments</key>
-  <array>
-    <string>/Library/Scripts/toggleAirport.sh</string>
-  </array>
-  <key>WatchPaths</key>
-  <array>
-    <string>/Library/Preferences/SystemConfiguration</string>
-  </array>
+	<key>Label</key>
+	<string>com.advaq.toggleairport</string>
+	<key>OnDemand</key>
+	<true/>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Library/Scripts/toggleAirport.sh</string>
+	</array>
+	<key>WatchPaths</key>
+	<array>
+		<string>/Library/Preferences/SystemConfiguration</string>
+	</array>
 </dict>
 </plist>
