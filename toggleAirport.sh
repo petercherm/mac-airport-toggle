@@ -1,10 +1,10 @@
 #!/bin/bash
 
-  # http://hints.macworld.com/article.php?story=20100927161027611
+# http://hints.macworld.com/article.php?story=20100927161027611
 
-  # detect Airport and Ethernet interfaces
-  eth_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (USB 10\/100\/1000 LAN|Thunderbolt Ethernet?.*), Device: (en?.*)\)$/\2/p'`
-  wifi_dev=`networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (Wi-Fi|AirPort), Device: (en.)\)$/\2/p'`
+# detect Airport and Ethernet interfaces
+eth_dev=$(networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (USB 10\/100\/1000 LAN|Thunderbolt Ethernet?.*), Device: (en?.*)\)$/\2/p')
+wifi_dev=$(networksetup -listnetworkserviceorder | sed -En 's/^\(Hardware Port: (Wi-Fi|AirPort), Device: (en.)\)$/\2/p')
 
 function set_airport {
 
@@ -16,8 +16,8 @@ function set_airport {
   else
     /usr/sbin/networksetup -setairportpower $wifi_dev off
     if [ -f "/var/tmp/prev_air_on" ]; then
-	    rm /var/tmp/prev_air_on
-	  fi
+      rm /var/tmp/prev_air_on
+    fi
   fi
 }
 
@@ -40,21 +40,19 @@ if [ -f "/var/tmp/prev_air_on" ]; then
 fi
 
 # Check actual current ethernet status of all matching adapters
-for i in $eth_dev
-  do
-    if [ "`ifconfig $i | grep \"status: active\"`" != "" ]; then
-      eth_status="On"
-    fi
-  done
-
+for i in $eth_dev; do
+  if [ "$(ifconfig $i | grep "status: active")" != "" ]; then
+    eth_status="On"
+  fi
+done
 
 # And actual current AirPort status
-air_status=`/usr/sbin/networksetup -getairportpower $wifi_dev | awk '{ print $4 }'`
+air_status=$(/usr/sbin/networksetup -getairportpower $wifi_dev | awk '{ print $4 }')
 
 # If any change has occured. Run external script (if it exists)
 if [ "$prev_air_status" != "$air_status" ] || [ "$prev_eth_status" != "$eth_status" ]; then
   if [ -f "./statusChanged.sh" ]; then
-	  "./statusChanged.sh" "$eth_status" "$air_status" &
+    "./statusChanged.sh" "$eth_status" "$air_status" &
   fi
 fi
 
@@ -77,11 +75,11 @@ else
   if [ "$prev_air_status" != "$air_status" ]; then
     set_airport $air_status
 
-	  if [ "$air_status" = "On" ]; then
+    if [ "$air_status" = "On" ]; then
       osascript -e 'display notification "WiFi manually turned on." with title "Network adapter"'
-	  else
+    else
       osascript -e 'display notification "WiFi manually turned off." with title "Network adapter"'
-	  fi
+    fi
   fi
 fi
 
@@ -90,7 +88,7 @@ if [ "$eth_status" == "On" ]; then
   touch /var/tmp/prev_eth_on
 else
   if [ -f "/var/tmp/prev_eth_on" ]; then
-	  rm /var/tmp/prev_eth_on
+    rm /var/tmp/prev_eth_on
   fi
 fi
 
